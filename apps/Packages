@@ -1,0 +1,15 @@
+Package: raspirus
+Version: 1.1.3
+Architecture: amd64
+Maintainer: Demetz Benjamin, Hell Björn Felix
+Installed-Size: 10603
+Depends: libwebkit2gtk-4.0-37, libgtk-3-0
+Filename: ./raspirus_1.1.3_amd64.deb
+Size: 5765056
+MD5sum: a1f3291cecdb650d89951843282d9b6e
+SHA1: 1484a62f5963ab36d18fea9c8ffd55854bebb7eb
+SHA256: e185ad933dc35ba571ba614142420002009e6688266947b15ee6316905372b83
+Priority: optional
+Description: Lightweight hash-based virusscanner
+ Hash based Virusscanner to scan USB drives
+

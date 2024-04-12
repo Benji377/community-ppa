@@ -20,8 +20,8 @@ You can find a list of all the packages in this repository below.
 - Your .deb package must be a valid package. You should test-install it on your system first
 - Then, simply create a PR request where you add your .deb package to the apps directory
 - Or when updating, replace your old package with the new one
-- Remember to also update the README by adding your package to it in alphabetical order
+- Remember to also update the README by adding your package name to it in alphabetical order and a short description
 - Once verified, your package will be added to the list
 
 ## Package list
-- [Raspirus](https://github.com/Raspirus/Raspirus) A signature based malware scanner
+- [raspirus](https://github.com/Raspirus/Raspirus) A signature based malware scanner

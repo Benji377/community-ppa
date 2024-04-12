@@ -1,4 +1,4 @@
-# community-ppa
+# Community PPA
 # About
 WORK IN PROGRESS
 
@@ -6,7 +6,7 @@ WORK IN PROGRESS
 Simply execute the following commands:
 ```
 curl -s --compressed "https://Benji377.github.io/community-ppa/KEY.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/community-ppa.gpg >/dev/null
-sudo curl -s --compressed -o /etc/apt/sources.list.d/my_list_file.list "https://Benji377.github.io/community-ppa/app_list.list"
+sudo curl -s --compressed -o /etc/apt/sources.list.d/app_list.list "https://Benji377.github.io/community-ppa/app_list.list"
 sudo apt update
 ```
 And then you can install all the packages using:

@@ -1,1 +1,1 @@
-deb [signed-by=/etc/apt/trusted.gpg.d/community-ppa.gpg] https://Benji377.github.io/community-ppa ./
+deb [signed-by=/etc/apt/trusted.gpg.d/community-ppa.gpg] https://Benji377.github.io/community-ppa ./apps

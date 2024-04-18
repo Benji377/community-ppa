@@ -21,6 +21,7 @@ You can find a list of all the packages in this repository below.
 - Then, simply copy the `package.toml` to the packages directory and edit it and submit a PR
 - Or when updating, replace your old package with the new one
 - Once verified, your package will be added to the list
+
 Reference to [PACKAGING](PACKAGING.md)
 
 <!-- GENERATED -->

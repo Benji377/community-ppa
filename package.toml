@@ -1,0 +1,27 @@
+# Information related to the maintainer/submitter
+[submitter]
+name = "Joe"
+email = "name@domain.com"
+website = "https://website.com"
+is_maintainer = true
+
+# Data related to the package
+[package]
+name = "package"
+version = "1.0.0"
+summary = "..."
+description = "..."
+type = ""
+website = "https://website.com"
+license = ""
+# Needs to be a .deb file
+source = "https://github.com/Benji377/community-ppa"
+auto_update = true
+# Adapt to correct nomenclature
+arch = "x86_64"
+signature = "" # sha256
+
+[assets]
+# URLs to public images. Will resize automatically
+logo = ""
+banner = ""

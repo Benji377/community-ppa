@@ -19,6 +19,7 @@ You can find a list of all the packages in this repository below.
 ## How to add or update your package
 - Your .deb package must be a valid package. You should test-install it on your system first
 - Then, simply copy the `package.toml` to the packages directory and edit it and submit a PR
+- Remember to rename the file to your package
 - Or when updating, replace your old package with the new one
 - Once verified, your package will be added to the list
 

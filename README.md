@@ -27,5 +27,5 @@ Reference to [PACKAGING](PACKAGING.md)
 
 <!-- GENERATED -->
 ## Package list
-## DeveloperTool
+### DeveloperTool
 - [raspirus](https://github.com/Raspirus/Raspirus) A signature based malware scanner

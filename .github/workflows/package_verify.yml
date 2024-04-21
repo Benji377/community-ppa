@@ -4,6 +4,8 @@ on:
   # Trigger the workflow on push or pull request
   pull_request:
     branches: ["main"]
+    paths:
+      - 'specifications/*.toml'
   workflow_dispatch:
 
 jobs:

@@ -2,8 +2,10 @@
 name: Package List
 
 on:
-#  push:
-#    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'apps/*.deb'
   workflow_dispatch:
 
 defaults:

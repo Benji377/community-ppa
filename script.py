@@ -13,6 +13,8 @@ import tomli_w
 _APP_DIR = 'apps'
 # Updates directory
 _UPDATE_DIR = 'updates'
+# Specifications directory
+_SPEC_DIR = 'specifications'
 # Fields that must be present in the TOML file and not empty
 _SUBMITTER_REQUIRED_FIELDS = ['name', 'email', 'is_maintainer']
 _PACKAGE_REQUIRED_FIELDS = ['name', 'version', 'summary', 'type', 'license', 'source', 'arch']
@@ -36,6 +38,21 @@ def parse_toml(path: str):
         print('[PARSING] Missing package information')
         return None
     return data
+
+
+def fetch_all():
+    print("[FETCHALL] Fetching all deb packages")
+    for file in os.listdir(_SPEC_DIR):
+        if file.endswith('.toml'):
+            # Check if there is a deb package in the apps directory with the same name
+            # Simply check the name of the files in the apps directory before the first underscore
+            # If the name is the same, then the deb package is already present
+            for deb_file in os.listdir(_APP_DIR):
+                if file.split('.')[0] == deb_file.split('_')[0]:
+                    print(f"[FETCHALL] Deb package for {file} already present")
+                    pass
+                else:
+                    fetch(os.path.join(_SPEC_DIR, file))
 
 
 def fetch(path: str):
@@ -231,6 +248,8 @@ def main(action: str, path: str):
     elif action == 'update':
         update()
         package_update()
+    elif action == 'fetch':
+        fetch_all()
     elif action == 'delete':
         print('Not yet implemented')
     else:

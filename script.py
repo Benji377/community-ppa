@@ -141,7 +141,7 @@ def verify(path: str, output_path='verification.txt', updating=False):
         # Check the SHA256 hash of the deb package
         try:
             print(f"[VERIFY] Checking signature of {deb_file}")
-            output += subprocess.check_output(['sha256sum', deb_file_path],
+            output += subprocess.check_output(f'sha256sum {deb_file_path}',
                                               shell=True, stderr=subprocess.STDOUT).decode('utf-8')
         except subprocess.CalledProcessError as e:
             output += e.output.decode('utf-8').replace('\n', ' ')
@@ -149,14 +149,14 @@ def verify(path: str, output_path='verification.txt', updating=False):
         output += "\n=== LINTIAN OUTPUT ===\n"
         # Run lintian on the deb package
         try:
-            output += subprocess.check_output(['lintian', deb_file_path],
+            output += subprocess.check_output(f'lintian {deb_file_path}',
                                               shell=True, stderr=subprocess.STDOUT).decode('utf-8')
         except subprocess.CalledProcessError as e:
             output += e.output.decode('utf-8').replace('\n', ' ')
         output += "\n=== DPKG-DEB OUTPUT ===\n"
         # dpkg-deb --info
         try:
-            output += subprocess.check_output(['dpkg-deb --info', deb_file_path],
+            output += subprocess.check_output(f'dpkg-deb --info {deb_file_path}',
                                               shell=True, stderr=subprocess.STDOUT).decode('utf-8')
         except subprocess.CalledProcessError as e:
             output += e.output.decode('utf-8').replace('\n', ' ')

@@ -3,7 +3,7 @@
 name = "Benji377"
 email = "raspirus.dev@gmail.com"
 website = "https://github.com/Benji377"
-is_maintainer = true
+is_maintainer = false
 
 # Data related to the package
 [package]

@@ -1,0 +1,49 @@
+# Workflow to update package list
+name: Package List
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./apps
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: Install necessary deps
+        run: |
+          apt update && apt upgrade -y
+          apt install gpg dpkg-dev apt-utils gzip
+
+      - name: Create Packages
+        run: |
+          dpkg-scanpackages --multiversion . > Packages
+          gzip -k -f Packages
+
+      - name: Add GPG key
+        run: echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+
+      - name: Create Release
+        run: |
+          apt-ftparchive release . > Release
+          gpg --default-key "$GPG_EMAIL" -abs -o - Release > Release.gpg
+          gpg --default-key "$GPG_EMAIL" --clearsign -o - Release > InRelease
+        env:
+          GPG_EMAIL: ${{ secrets.GPG_EMAIL }}
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: 'Updating package list'
+          add: '-A'

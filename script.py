@@ -75,6 +75,8 @@ def fetch(path: str):
 
 
 def format_package_name(toml_file):
+    if toml_file is None or toml_file == '':
+        return None
     arch = toml_file['package']['arch']
     arch = 'amd64' if arch == 'x86_64' else arch
     file_name = f"{toml_file['package']['name']}_{toml_file['package']['version']}_{arch}.deb"
@@ -176,8 +178,10 @@ def update():
     update_error_list = {}
     for file in os.listdir(_APP_DIR):
         if file.endswith('.toml'):
+            print(f"[UPDATING] Checking {file}")
             toml_file = parse_toml(os.path.join(_APP_DIR, file))
             if toml_file is not None and toml_file['package']['auto_update']:
+                print(f"[UPDATING] Auto update enabled for {format_package_name(toml_file)}")
                 to_update, latest_version = parse_url_compare_release(toml_file['package'])
                 if to_update:
                     output += f"- {format_package_name(toml_file)}: {toml_file['package']['source']} -> {latest_version}\n"
@@ -188,6 +192,8 @@ def update():
                 else:
                     print(f"[UPDATING] No update available for {format_package_name(toml_file)}")
                     update_error_list[format_package_name(toml_file)] = "No update available"
+            else:
+                print(f"[UPDATING] Auto update disabled for {format_package_name(toml_file if not None else '')}")
     # Update the TOML files with the new version
     print('[UPDATING] Updating TOML files versions')
     for file_, data in to_update_list.items():

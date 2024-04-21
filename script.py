@@ -213,6 +213,9 @@ def update():
                 print(f"[UPDATING] Auto update disabled for {format_package_name(toml_file if not None else '')}")
     # Update the TOML files with the new version
     print('[UPDATING] Updating TOML files versions')
+    if len(to_update_list.keys()) == 0:
+        print('[UPDATING] No updates available')
+        output += "No updates available"
     for file_, data in to_update_list.items():
         with open(os.path.join(_APP_DIR, file_), 'wb') as f_:
             tomli_w.dump(data, f_)

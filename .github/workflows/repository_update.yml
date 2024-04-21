@@ -1,5 +1,5 @@
 # Workflow to update package list
-name: Package List
+name: Repository Update
 
 on:
   push:

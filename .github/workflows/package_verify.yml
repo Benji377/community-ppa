@@ -23,11 +23,12 @@ jobs:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           FIRST_CHANGED_FILE=$(echo "${ALL_CHANGED_FILES}" | head -n 1)
-          echo "::set-output name=first_changed_file::$FIRST_CHANGED_FILE"
+          echo "changed_file=$FIRST_CHANGED_FILE" >> "$GITHUB_ENV"
         
       - name: Echo stored variable
         run: |
-          echo "The first changed file is: ${{ steps.first-changed-file.outputs.first_changed_file }}"
+          echo "The first changed file is: $changed_file"
+          echo "ENV variable: $FIRST_CHANGED_FILE"
 
       
       - uses: actions/github-script@v6

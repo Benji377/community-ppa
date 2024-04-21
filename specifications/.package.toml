@@ -19,7 +19,6 @@ source = "https://github.com/Benji377/community-ppa"
 auto_update = true
 # Adapt to correct nomenclature
 arch = "x86_64"
-signature = "" # sha256
 
 [assets]
 # URLs to public images. Will resize automatically

@@ -15,7 +15,7 @@ _APP_DIR = 'apps'
 _UPDATE_DIR = 'updates'
 # Fields that must be present in the TOML file and not empty
 _SUBMITTER_REQUIRED_FIELDS = ['name', 'email', 'is_maintainer']
-_PACKAGE_REQUIRED_FIELDS = ['name', 'version', 'summary', 'type', 'license', 'source', 'arch', 'signature']
+_PACKAGE_REQUIRED_FIELDS = ['name', 'version', 'summary', 'type', 'license', 'source', 'arch']
 
 
 def parse_toml(path: str):
@@ -28,7 +28,8 @@ def parse_toml(path: str):
         print(f'[PARSING] Error: {e}')
         return None
     # Check if the required fields are present in the TOML file
-    if 'submitter' not in data or not all(data['submitter'].get(field) is not None for field in _SUBMITTER_REQUIRED_FIELDS):
+    if 'submitter' not in data or not all(
+            data['submitter'].get(field) is not None for field in _SUBMITTER_REQUIRED_FIELDS):
         print('[PARSING] Missing submitter information')
         return None
     if 'package' not in data or not all(data['package'].get(field) is not None for field in _PACKAGE_REQUIRED_FIELDS):
@@ -37,7 +38,7 @@ def parse_toml(path: str):
     return data
 
 
-def fetch(path: str, updating=False):
+def fetch(path: str):
     print(f'[FETCH] Fetching data from {path}')
     toml_file = parse_toml(path)
     if toml_file is not None:
@@ -64,14 +65,8 @@ def fetch(path: str, updating=False):
                 print(f"[FETCH] Writing to file: {file_name}")
                 f.write(r.content)
             print(f'[FETCH] Deb package saved to {os.path.join(_APP_DIR, file_name)}')
-            if updating:
-                # Create the signature of the deb package
-                signature = subprocess.check_output(['sha256sum', os.path.join(_APP_DIR, file_name)],
-                                                    shell=True).decode('utf-8').split()[0]
-                print(f'[FETCH] Generated signature: {signature}')
-                toml_file['package']['signature'] = signature
 
-            return file_name, toml_file['package']['signature']
+            return file_name
         else:
             print('[FETCH] Invalid source')
     else:
@@ -138,26 +133,18 @@ def parse_url_compare_release(toml_file_pkg):
 
 def verify(path: str, output_path='verification.txt', updating=False):
     print(f'[VERIFY] Verifying data from {path}')
-    deb_file, signature = fetch(path, updating)
-    print(f"[VERIFY] Deb file: {deb_file}, Signature: {signature}")
+    deb_file = fetch(path)
     deb_file_path = os.path.join(_APP_DIR, deb_file)
 
-    if deb_file is not None and signature is not None:
+    if deb_file is not None:
         output = "=== SIGNATURE VERIFICATION ===\n"
         # Check the SHA256 hash of the deb package
-        if updating:
-            output += "Skipping signature verification - Generated\n"
-        else:
-            try:
-                print(f"[VERIFY] Checking signature of {deb_file}")
-                output += subprocess.check_output(['sha256sum', deb_file_path],
-                                                  shell=True, stderr=subprocess.STDOUT).decode('utf-8')
-                # If the signature is not equal to the one in the TOML file, return None
-                if output.split()[0] != signature:
-                    print(f"[VERIFY] Signature mismatch: {output.split()[0]} != {signature}")
-                    output += f"\nSignature mismatch: {output.split()[0]} != {signature}\n"
-            except subprocess.CalledProcessError as e:
-                output += e.output.decode('utf-8').replace('\n', ' ')
+        try:
+            print(f"[VERIFY] Checking signature of {deb_file}")
+            output += subprocess.check_output(['sha256sum', deb_file_path],
+                                              shell=True, stderr=subprocess.STDOUT).decode('utf-8')
+        except subprocess.CalledProcessError as e:
+            output += e.output.decode('utf-8').replace('\n', ' ')
 
         output += "\n=== LINTIAN OUTPUT ===\n"
         # Run lintian on the deb package

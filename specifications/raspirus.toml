@@ -19,7 +19,6 @@ source = "https://github.com/Raspirus/Raspirus/releases/download/v$pversion/$pna
 auto_update = false
 # Adapt to correct nomenclature
 arch = "x86_64"
-signature = "e185ad933dc35ba571ba614142420002009e6688266947b15ee6316905372b83" # sha256 Use `sha256sum <package.deb>`
 
 [assets]
 # URLs to public images. Will resize automatically

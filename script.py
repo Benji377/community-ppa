@@ -28,10 +28,10 @@ def parse_toml(path: str):
         print(f'[PARSING] Error: {e}')
         return None
     # Check if the required fields are present in the TOML file
-    if 'submitter' not in data or not all(data['submitter'].get(field) for field in _SUBMITTER_REQUIRED_FIELDS):
+    if 'submitter' not in data or not all(data['submitter'].get(field) is not None for field in _SUBMITTER_REQUIRED_FIELDS):
         print('[PARSING] Missing submitter information')
         return None
-    if 'package' not in data or not all(data['package'].get(field) for field in _PACKAGE_REQUIRED_FIELDS):
+    if 'package' not in data or not all(data['package'].get(field) is not None for field in _PACKAGE_REQUIRED_FIELDS):
         print('[PARSING] Missing package information')
         return None
     return data

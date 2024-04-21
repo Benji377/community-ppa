@@ -25,18 +25,20 @@ jobs:
           FIRST_CHANGED_FILE=$(echo "${ALL_CHANGED_FILES}" | head -n 1)
           echo "changed_file=$FIRST_CHANGED_FILE" >> "$GITHUB_ENV"
         
-      - name: Echo stored variable
-        run: |
-          echo "The first changed file is: $changed_file"
-          echo "ENV variable: $FIRST_CHANGED_FILE"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip' # caching pip dependencies
+      - run: pip install -r requirements.txt
+      - run: python script.py verify $changed_file
 
-      
       - uses: actions/github-script@v6
         with:
           script: |
+            const fs = require('fs')
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
+              body: fs.readFileSync('verification.txt', 'utf8')
             })

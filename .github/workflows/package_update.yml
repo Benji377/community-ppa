@@ -20,8 +20,8 @@ jobs:
 
       - name: Install necessary deps
         run: |
-          apt update && apt upgrade -y
-          apt install gpg dpkg-dev apt-utils gzip
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install gpg dpkg-dev apt-utils gzip
 
       - name: Create Packages
         run: |

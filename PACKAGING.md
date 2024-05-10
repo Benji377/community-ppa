@@ -28,7 +28,6 @@ Fields marked by `*` are necessary, all the others are optional.
 - ***source**: Has to be a URL pointing to a `.deb` file. You can use the variables `$pname` and `$pversion` for the package name and the package version respectively.
 - ***auto_update**: (Default = true) If set to true, we will check periodically (once a week) if there is a new release available and update this file and the entry in the repository. This only works on GitHub (for now)
 - ***arch**: Select one of the possible architectures. You need to submit a file and package for each arch if there are multiple ones. The architecture can be: "x86_64", "armv7h" or "aarch64"
-- ***signature**: The SHA256 signature of the submitted package to verify its integrity
 
 ### Assets
 - **logo**: URL to a publicly hosted image, ideally of size 256x256, which represents the logo of the application

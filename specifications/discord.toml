@@ -12,10 +12,10 @@ version = "0.0.53"
 summary = "The Discord app for Debian"
 description = ""
 type = "SocialNetworking"
-website = "https://discord.com/"
+website = "https://discord.com"
 license = "proprietary"
 # Needs to be a .deb file
-source = "https://discord.com/api/download?platform=linux&format=deb"
+source = "https://dl.discordapp.net/apps/linux/0.0.53/$pname-$pversion.deb"
 auto_update = true
 # Adapt to correct nomenclature
 arch = "x86_64"

@@ -5,7 +5,6 @@ import sys
 import subprocess
 import datetime
 import zipfile
-
 import requests
 import tomli_w
 
@@ -222,7 +221,8 @@ def update():
                 print(f"[UPDATING] Auto update enabled for {format_package_name(toml_file)}")
                 to_update, latest_version = parse_url_compare_release(toml_file['package'])
                 if to_update:
-                    output += f"- {format_package_name(toml_file)}: {toml_file['package']['source']} -> {latest_version}\n"
+                    output += (f"- {format_package_name(toml_file)}: "
+                               f"{parse_url(toml_file['package']['source'], toml_file)} -> {latest_version}\n")
                     print(f"[UPDATING] Updating {format_package_name(toml_file)} to {latest_version}")
                     # Write new version to the TOML file
                     toml_file['package']['version'] = latest_version

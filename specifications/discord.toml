@@ -1,26 +1,21 @@
-# Information related to the maintainer/submitter
 [submitter]
 name = "Benji377"
 email = "name@domain.com"
 website = "https://website.com"
 is_maintainer = false
 
-# Data related to the package
 [package]
-name = "debian"
+name = "discord"
 version = "0.0.53"
 summary = "The Discord app for Debian"
 description = ""
 type = "SocialNetworking"
 website = "https://discord.com"
 license = "proprietary"
-# Needs to be a .deb file
-source = "https://dl.discordapp.net/apps/linux/0.0.53/$pname-$pversion.deb"
+source = "https://dl.discordapp.net/apps/linux/$pversion/$pname-$pversion.deb"
 auto_update = true
-# Adapt to correct nomenclature
 arch = "x86_64"
 
 [assets]
-# URLs to public images. Will resize automatically
 logo = ""
 banner = ""

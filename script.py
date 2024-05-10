@@ -57,7 +57,7 @@ def fetch_all():
 
 def fetch(path: str):
     print(f'[FETCH] Fetching data from {path}')
-    toml_file = parse_toml(path)
+    toml_file = parse_toml(os.path.join(_SPEC_DIR, path))
     if toml_file is not None:
         deb_source = toml_file['package']['source']
         # Check if the source is a deb package
@@ -148,9 +148,30 @@ def parse_url_compare_release(toml_file_pkg):
                 return True, latest_version
             else:
                 return False, None
+    else:
+        print('[COMPARE] Not a GitHub source, comparing version number')
+        # Splits the version number by dot and then tries to increase them gradually
+        # If the version number is the same, then the package is up to date
+        version = toml_file_pkg['version'].split('.')
+        # We first try to increase the last number, then try to fetch the deb package
+        # If the deb package is not found, then we increase the second last number and so on
+        for i in range(len(version) - 1, -1, -1):
+            version[i] = str(int(version[i]) + 1)
+            new_version = '.'.join(version)
+            print(f'[COMPARE] New version: {new_version}')
+            # Check if the new version is available by replacing the version number in the URL
+            new_url = parse_url(toml_file_pkg['source'], toml_file_pkg).replace(toml_file_pkg['version'], new_version)
+            print(f'[COMPARE] New URL: {new_url}')
+            r = requests.head(new_url, allow_redirects=True)
+            print(f'[COMPARE] Status code: {r.status_code}')
+
+            if r.status_code == 200:
+                print(f'[COMPARE] New version available: {new_version}')
+                return True, new_version
+        return False, None
 
 
-def verify(path: str, output_path='verification.txt', updating=False):
+def verify(path: str, output_path='verification.txt'):
     print(f'[VERIFY] Verifying data from {path}')
     deb_file = fetch(path)
     deb_file_path = os.path.join(_APP_DIR, deb_file)
@@ -193,10 +214,10 @@ def update():
     output = "=== NEED UPDATE ===\n"
     to_update_list = {}
     update_error_list = {}
-    for file in os.listdir(_APP_DIR):
-        if file.endswith('.toml'):
+    for file in os.listdir(_SPEC_DIR):
+        if file.endswith('.toml') and not file.startswith('.'):
             print(f"[UPDATING] Checking {file}")
-            toml_file = parse_toml(os.path.join(_APP_DIR, file))
+            toml_file = parse_toml(os.path.join(_SPEC_DIR, file))
             if toml_file is not None and toml_file['package']['auto_update']:
                 print(f"[UPDATING] Auto update enabled for {format_package_name(toml_file)}")
                 to_update, latest_version = parse_url_compare_release(toml_file['package'])
@@ -217,7 +238,7 @@ def update():
         print('[UPDATING] No updates available')
         output += "No updates available"
     for file_, data in to_update_list.items():
-        with open(os.path.join(_APP_DIR, file_), 'wb') as f_:
+        with open(os.path.join(_SPEC_DIR, file_), 'wb') as f_:
             tomli_w.dump(data, f_)
     # Now fetch the new deb packages
     output += "\n=== UPDATED ===\n"
